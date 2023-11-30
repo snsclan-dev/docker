@@ -30,8 +30,9 @@ services:
             - '81:81'
             - '443:443'
         environment:
+            TZ: Asia/Seoul
             DB_MYSQL_HOST: "db"
-            DB_MYSQL_PORT: 30077
+            DB_MYSQL_PORT: 3306
             DB_MYSQL_USER: "npm"
             DB_MYSQL_PASSWORD: "npm"
             DB_MYSQL_NAME: "npm"
@@ -43,9 +44,8 @@ services:
     db:
         image: 'jc21/mariadb-aria:latest'
         restart: unless-stopped
-        ports:
-            - '30077:3306'
         environment:
+            TZ: Asia/Seoul
             MYSQL_ROOT_PASSWORD: 'npm'
             MYSQL_DATABASE: 'npm'
             MYSQL_USER: 'npm'
