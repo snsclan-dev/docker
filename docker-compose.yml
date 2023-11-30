@@ -6,7 +6,7 @@ services:
         restart: always
         volumes:
             - ./mysql/data:/var/lib/mysql
-            - ./mysql/my.cnf:/etc/mysql/my.cnf
+            - ./mysql/my.cnf:/etc/my.cnf
         environment:
             MYSQL_ROOT_PASSWORD: ${PASSWORD}
             TZ: Asia/Seoul
