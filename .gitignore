@@ -1,0 +1,7 @@
+.env*
+/letsencrypt
+/mysql/data
+/npm
+/npm/data
+/npm/mysql
+/redis/data
