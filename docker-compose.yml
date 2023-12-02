@@ -2,6 +2,7 @@ version: "3"
 
 services:
     mysql:
+        container_name: mysql
         image: mysql
         restart: always
         volumes:
@@ -43,6 +44,7 @@ services:
         depends_on:
             - db
     db:
+        container_name: npm_dbd
         image: 'jc21/mariadb-aria:latest'
         restart: unless-stopped
         environment:
@@ -56,5 +58,7 @@ services:
 
 networks:
     default:
-        name: net_npm
-        driver: bridge
+        external: 
+            name: npm
+        # name: net_npm
+        # driver: bridge
