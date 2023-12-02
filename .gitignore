@@ -1,7 +1,8 @@
 .env*
+/data
+/backup
 /letsencrypt
 /mysql/data
-/npm
+/redis/data
 /npm/data
 /npm/mysql
-/redis/data
