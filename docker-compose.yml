@@ -26,8 +26,6 @@ services:
         container_name: npm
         image: 'jc21/nginx-proxy-manager:latest'
         restart: unless-stopped
-        networks:
-            - net_5700
         ports:
             - '80:80'
             - '81:81'
