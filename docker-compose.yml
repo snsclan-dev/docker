@@ -58,6 +58,6 @@ services:
 
 networks:
     default:
+        name: npm
         external: true
-        # name: net_npm
         # driver: bridge
