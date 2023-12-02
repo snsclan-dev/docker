@@ -14,6 +14,7 @@ services:
         ports:
             - ${MYSQL_PORT}:3306
     redis:
+        container_name: redis
         image: redis
         restart: always
         volumes:
@@ -44,7 +45,7 @@ services:
         depends_on:
             - db
     db:
-        container_name: npm_dbd
+        container_name: npm_db
         image: 'jc21/mariadb-aria:latest'
         restart: unless-stopped
         environment:
