@@ -55,9 +55,3 @@ services:
             MYSQL_PASSWORD: 'npm'
         volumes:
             - ./npm/mysql:/var/lib/mysql
-
-networks:
-    default:
-        name: npm
-        external: true
-        # driver: bridge
