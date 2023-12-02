@@ -23,8 +23,11 @@ services:
         command: 
             redis-server /usr/local/etc/redis/redis.conf
     npm:
+        container_name: npm
         image: 'jc21/nginx-proxy-manager:latest'
         restart: unless-stopped
+        networks:
+            - net_5700
         ports:
             - '80:80'
             - '81:81'
@@ -52,3 +55,8 @@ services:
             MYSQL_PASSWORD: 'npm'
         volumes:
             - ./npm/mysql:/var/lib/mysql
+
+networks:
+    default: 
+        external: true
+        name: npm
