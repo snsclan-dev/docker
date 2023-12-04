@@ -1,4 +1,4 @@
-version: "3"
+version: "3.8"
 
 services:
     mysql:
@@ -6,7 +6,7 @@ services:
         image: mysql
         restart: always
         volumes:
-            - ./mysql/data:/var/lib/mysql
+            - ./data/mysql:/var/lib/mysql
             - ./mysql/my.cnf:/etc/my.cnf
         environment:
             MYSQL_ROOT_PASSWORD: ${PASSWORD}
@@ -18,7 +18,7 @@ services:
         image: redis
         restart: always
         volumes:
-            - ./redis/data:/data
+            - ./data/redis:/data
             - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
         ports:
             - ${REDIS_PORT}:6379
@@ -40,9 +40,8 @@ services:
             DB_MYSQL_PASSWORD: "npm"
             DB_MYSQL_NAME: "npm"
         volumes:
-            - ./npm/data:/data
-            - ./letsencrypt:/etc/letsencrypt
-            - ./npm/server_redirect.conf:/data/nginx/custom/server_redirect.conf
+            - ./data/npm:/data
+            - ./data/letsencrypt:/etc/letsencrypt
         depends_on:
             - db
     db:
@@ -56,4 +55,4 @@ services:
             MYSQL_USER: 'npm'
             MYSQL_PASSWORD: 'npm'
         volumes:
-            - ./npm/mysql:/var/lib/mysql
+            - ./data/mysql:/var/lib/mysql
