@@ -43,8 +43,8 @@ services:
             - ./data/npm:/data
             - ./data/letsencrypt:/etc/letsencrypt
         depends_on:
-            - db
-    db:
+            - npm_db
+    npm_db:
         container_name: npm_db
         image: 'jc21/mariadb-aria:latest'
         restart: unless-stopped
@@ -55,4 +55,4 @@ services:
             MYSQL_USER: 'npm'
             MYSQL_PASSWORD: 'npm'
         volumes:
-            - ./data/mysql:/var/lib/mysql
+            - ./data/npm_db:/var/lib/mysql
