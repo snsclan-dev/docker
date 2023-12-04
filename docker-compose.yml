@@ -1,9 +1,9 @@
-version: "3.8"
+version: "3"
 
 services:
     mysql:
         container_name: mysql
-        image: mysql
+        image: mysql:8.0
         restart: always
         volumes:
             - ./data/mysql:/var/lib/mysql
@@ -34,7 +34,7 @@ services:
             - '443:443'
         environment:
             TZ: Asia/Seoul
-            DB_MYSQL_HOST: "npm_db"
+            DB_MYSQL_HOST: "db"
             DB_MYSQL_PORT: 3306
             DB_MYSQL_USER: "npm"
             DB_MYSQL_PASSWORD: "npm"
@@ -43,8 +43,8 @@ services:
             - ./data/npm:/data
             - ./data/letsencrypt:/etc/letsencrypt
         depends_on:
-            - npm_db
-    npm_db:
+            - db
+    db:
         container_name: npm_db
         image: 'jc21/mariadb-aria:latest'
         restart: unless-stopped
@@ -55,4 +55,4 @@ services:
             MYSQL_USER: 'npm'
             MYSQL_PASSWORD: 'npm'
         volumes:
-            - ./data/npm_db:/var/lib/mysql
+            - ./data/mysql:/var/lib/mysql
