@@ -21,7 +21,7 @@ services:
             - ./data/redis:/data
             - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
         ports:
-            - 6379:6379
+            - ${REDIS_PORT}:6379
         command: 
             redis-server /usr/local/etc/redis/redis.conf
     npm:
