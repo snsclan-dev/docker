@@ -43,7 +43,7 @@ services:
             - ./data/npm:/data
             - ./data/letsencrypt:/etc/letsencrypt
             - ./npm/http_top.conf:/data/nginx/custom/http_top.conf
-            - ./npm/events.conf:/data/nginx/custom//data/nginx/custom/events.conf
+            - ./npm/events.conf:/data/nginx/custom/events.conf
         depends_on:
             - npm_db
     npm_db:
