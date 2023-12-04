@@ -43,8 +43,8 @@ services:
             - ./data/npm:/data
             - ./data/letsencrypt:/etc/letsencrypt
         depends_on:
-            - db
-    db:
+            - npm_db
+    npm_db:
         container_name: npm_db
         image: 'jc21/mariadb-aria:latest'
         restart: unless-stopped
