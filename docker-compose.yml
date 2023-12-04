@@ -34,7 +34,7 @@ services:
             - '443:443'
         environment:
             TZ: Asia/Seoul
-            DB_MYSQL_HOST: "db"
+            DB_MYSQL_HOST: "npm_db"
             DB_MYSQL_PORT: 3306
             DB_MYSQL_USER: "npm"
             DB_MYSQL_PASSWORD: "npm"
