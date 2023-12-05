@@ -1,5 +1,5 @@
 .env*
-text
+text.txt
 /data
 /backup
 /letsencrypt
@@ -7,3 +7,4 @@ text
 /redis/data
 /npm/data
 /npm/mysql
+*copy.yml
