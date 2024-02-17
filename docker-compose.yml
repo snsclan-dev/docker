@@ -6,19 +6,31 @@ services:
         image: mysql:8.0
         restart: always
         volumes:
-            - ${USER_PATH}/mysql:/var/lib/mysql
+            - ${DATA_PATH}/mysql:/var/lib/mysql
             - ./mysql/my.cnf:/etc/my.cnf
         environment:
             MYSQL_ROOT_PASSWORD: ${PASSWORD}
             TZ: Asia/Seoul
         ports:
             - ${MYSQL_PORT}:3306
+    mongo:
+        container_name: mongo
+        image: mongo
+        restart: always
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: root
+            MONGO_INITDB_ROOT_PASSWORD: ${PASSWORD}
+        ports:
+            - ${MONGO_PORT}:27017
+        volumes:
+            - ${DATA_PATH}/mongo:/data
+
     redis:
         container_name: redis
         image: redis
         restart: always
         volumes:
-            - ${DATA_PATH}/redis:/data
+            - ${DATA_FOLDER}/redis:/data
             - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
         ports:
             - ${REDIS_PORT}:6379
@@ -40,7 +52,7 @@ services:
             DB_MYSQL_PASSWORD: "npm"
             DB_MYSQL_NAME: "npm"
         volumes:
-            - ${DATA_PATH}/npm:/data
+            - ${DATA_FOLDER}/npm:/data
             - /data/letsencrypt:/etc/letsencrypt
             - ./npm/http_top.conf:/data/nginx/custom/http_top.conf
             - ./npm/events.conf:/data/nginx/custom/events.conf
@@ -57,7 +69,7 @@ services:
             MYSQL_USER: 'npm'
             MYSQL_PASSWORD: 'npm'
         volumes:
-            - ${DATA_PATH}/npm_db:/var/lib/mysql
+            - ${DATA_FOLDER}/npm_db:/var/lib/mysql
     portainer:
         container_name: portainer
         image: 'portainer/portainer-ce:latest'
@@ -66,24 +78,23 @@ services:
             - '8000:8000'
             - ${PORTAINER_PORT}:9000
         volumes:
+            - ${DATA_FOLDER}/portainer:/data
             - /var/run/docker.sock:/var/run/docker.sock
-            - ${DATA_PATH}/portainer:/data
     netdata:
         container_name: netdata
         image: netdata/netdata
-        restart: unless-stopped
-        ports:
-            - ${NETDATA_PORT}:19999
         pid: host
+        network_mode: host
+        restart: unless-stopped
         cap_add:
             - SYS_PTRACE
             - SYS_ADMIN
-        security-opt:
-            - apparmor=unconfined
+        security_opt:
+            - apparmor:unconfined
         volumes:
-            - ${DATA_PATH}/netdata:/etc/netdata
-            - netdatalib:/var/lib/netdata
-            - netdatacache:/var/cache/netdata
+            - ${DATA_FOLDER}/netdata:/etc/netdata
+            - ${DATA_FOLDER}/netdatalib:/var/lib/netdata
+            - ${DATA_FOLDER}/netdatacache:/var/cache/netdata
             - /etc/passwd:/host/etc/passwd:ro
             - /etc/group:/host/etc/group:ro
             - /etc/localtime:/etc/localtime:ro
