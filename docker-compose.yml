@@ -44,8 +44,6 @@ services:
             - /data/letsencrypt:/etc/letsencrypt
             - ./npm/http_top.conf:/data/nginx/custom/http_top.conf
             - ./npm/events.conf:/data/nginx/custom/events.conf
-            - ./npm/block_ip.conf:/data/npm/block_ip.conf
-            - ./npm/block_bot.conf:/data/npm/block_bot.conf
         depends_on:
             - npm_db
     npm_db:
