@@ -1,5 +1,6 @@
 .env*
 text.txt
+/test
 /data
 /backup
 /letsencrypt
