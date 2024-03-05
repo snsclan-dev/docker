@@ -55,6 +55,7 @@ services:
             - ${DATA_FOLDER}/letsencrypt:/etc/letsencrypt
             - ./npm/http_top.conf:/data/nginx/custom/http_top.conf
             - ./npm/events.conf:/data/nginx/custom/events.conf
+            - ./npm/server_proxy.conf:/data/nginx/custom/server_proxy.conf
         depends_on:
             - npm_db
     npm_db:
