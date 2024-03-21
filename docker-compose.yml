@@ -8,6 +8,7 @@ services:
         volumes:
             - ${DATA_PATH}/mysql:/var/lib/mysql
             - ./mysql/my.cnf:/etc/my.cnf
+            - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
         environment:
             MYSQL_ROOT_PASSWORD: ${PASSWORD}
             TZ: Asia/Seoul
@@ -55,6 +56,7 @@ services:
             - ${DATA_FOLDER}/letsencrypt:/etc/letsencrypt
             - ./npm/http_top.conf:/data/nginx/custom/http_top.conf
             - ./npm/events.conf:/data/nginx/custom/events.conf
+            - ./npm/server_proxy.conf:/data/nginx/custom/server_proxy.conf
         depends_on:
             - npm_db
     npm_db:
@@ -102,18 +104,18 @@ services:
             - /etc/os-release:/host/etc/os-release:ro
             - /var/log:/host/var/log:ro
             - /var/run/docker.sock:/var/run/docker.sock:ro
-    # wordpress:
-    #     container_name: wordpress
-    #     image: wordpress
-    #     restart: always
-    #     ports:
-    #         - 8080:80
-    #     environment:
-    #         WORDPRESS_DB_HOST: ${SERVER}:${MYSQL_PORT}
-    #         WORDPRESS_DB_USER: root
-    #         WORDPRESS_DB_PASSWORD: ${PASSWORD}
-    #         WORDPRESS_DB_NAME: wordpress
-    #     volumes:
-    #         - ${DATA_PATH}/wordpress:/var/www/html
-    #     depends_on:
-    #         - mysql
+    wordpress:
+        container_name: wordpress
+        image: wordpress
+        restart: always
+        ports:
+            - 8080:80
+        environment:
+            WORDPRESS_DB_HOST: ${SERVER}:${MYSQL_PORT}
+            WORDPRESS_DB_USER: root
+            WORDPRESS_DB_PASSWORD: ${PASSWORD}
+            WORDPRESS_DB_NAME: wordpress
+        volumes:
+            - ${DATA_PATH}/wordpress:/var/www/html
+        depends_on:
+            - mysql
