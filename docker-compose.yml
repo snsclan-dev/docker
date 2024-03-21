@@ -3,7 +3,7 @@ version: "3"
 services:
     mysql:
         container_name: mysql
-        image: mysql
+        image: mysql:8.0
         restart: always
         volumes:
             - ${DATA_PATH}/mysql:/var/lib/mysql
@@ -45,11 +45,11 @@ services:
             - '81:81'
             - '443:443'
         environment:
-            DB_MYSQL_HOST: "mysql"
-            DB_MYSQL_USER: "root"
-            DB_MYSQL_NAME: "npm"
+            DB_MYSQL_HOST: "npm_db"
             DB_MYSQL_PORT: 3306
-            DB_MYSQL_PASSWORD: ${PASSWORD}
+            DB_MYSQL_USER: "npm"
+            DB_MYSQL_PASSWORD: "npm"
+            DB_MYSQL_NAME: "npm"
             TZ: Asia/Seoul
         volumes:
             - ${DATA_FOLDER}/npm:/data
@@ -58,7 +58,19 @@ services:
             - ./npm/events.conf:/data/nginx/custom/events.conf
             - ./npm/server_proxy.conf:/data/nginx/custom/server_proxy.conf
         depends_on:
-            - mysql
+            - npm_db
+    npm_db:
+        container_name: npm_db
+        image: 'jc21/mariadb-aria:latest'
+        restart: unless-stopped
+        environment:
+            TZ: Asia/Seoul
+            MYSQL_ROOT_PASSWORD: 'npm'
+            MYSQL_DATABASE: 'npm'
+            MYSQL_USER: 'npm'
+            MYSQL_PASSWORD: 'npm'
+        volumes:
+            - ${DATA_FOLDER}/npm_db:/var/lib/mysql
     wordpress:
         container_name: wordpress
         image: wordpress
