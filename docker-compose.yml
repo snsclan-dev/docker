@@ -45,12 +45,12 @@ services:
             - '81:81'
             - '443:443'
         environment:
-            TZ: Asia/Seoul
-            DB_MYSQL_HOST: mysql
+            DB_MYSQL_HOST: "mysql"
+            DB_MYSQL_USER: "root"
+            DB_MYSQL_NAME: "npm"
             DB_MYSQL_PORT: 3306
-            DB_MYSQL_USER: root
             DB_MYSQL_PASSWORD: ${PASSWORD}
-            DB_MYSQL_NAME: npm
+            TZ: Asia/Seoul
         volumes:
             - ${DATA_FOLDER}/npm:/data
             - ${DATA_FOLDER}/letsencrypt:/etc/letsencrypt
