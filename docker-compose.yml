@@ -46,11 +46,11 @@ services:
             - '443:443'
         environment:
             TZ: Asia/Seoul
-            DB_MYSQL_HOST: "npm_db"
+            DB_MYSQL_HOST: mysql
             DB_MYSQL_PORT: 3306
-            DB_MYSQL_USER: "npm"
-            DB_MYSQL_PASSWORD: "npm"
-            DB_MYSQL_NAME: "npm"
+            DB_MYSQL_USER: root
+            DB_MYSQL_PASSWORD: ${PASSWORD}
+            DB_MYSQL_NAME: npm
         volumes:
             - ${DATA_FOLDER}/npm:/data
             - ${DATA_FOLDER}/letsencrypt:/etc/letsencrypt
@@ -58,19 +58,7 @@ services:
             - ./npm/events.conf:/data/nginx/custom/events.conf
             - ./npm/server_proxy.conf:/data/nginx/custom/server_proxy.conf
         depends_on:
-            - npm_db
-    npm_db:
-        container_name: npm_db
-        image: 'jc21/mariadb-aria:latest'
-        restart: unless-stopped
-        environment:
-            TZ: Asia/Seoul
-            MYSQL_ROOT_PASSWORD: 'npm'
-            MYSQL_DATABASE: 'npm'
-            MYSQL_USER: 'npm'
-            MYSQL_PASSWORD: 'npm'
-        volumes:
-            - ${DATA_FOLDER}/npm_db:/var/lib/mysql
+            - mysql
     portainer:
         container_name: portainer
         image: 'portainer/portainer-ce:latest'
