@@ -1,2 +1,2 @@
--- CREATE SCHEMA `npm` ;
+CREATE SCHEMA `npm` ;
 CREATE SCHEMA `wordpress` ;
