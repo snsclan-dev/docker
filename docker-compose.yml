@@ -95,8 +95,6 @@ services:
             - SYS_ADMIN
         security_opt:
             - apparmor:unconfined
-        ports:
-            - ${NETDATA_PORT}:19999
         volumes:
             - ${DATA_FOLDER}/netdata:/etc/netdata
             - ${DATA_FOLDER}/netdatalib:/var/lib/netdata
