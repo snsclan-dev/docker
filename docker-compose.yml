@@ -36,29 +36,29 @@ services:
     #         - ${REDIS_PORT}:6379
     #     command: 
     #         redis-server /usr/local/etc/redis/redis.conf
-    # npm:
-    #     container_name: npm
-    #     image: 'jc21/nginx-proxy-manager:latest'
-    #     restart: unless-stopped
-    #     ports:
-    #         - '80:80'
-    #         - '81:81'
-    #         - '443:443'
-    #     environment:
-    #         DB_MYSQL_HOST: ${SERVER}
-    #         DB_MYSQL_USER: root
-    #         DB_MYSQL_PASSWORD: ${PASSWORD}
-    #         DB_MYSQL_NAME: npm
-    #         DB_MYSQL_PORT: 3306
-    #         TZ: Asia/Seoul
-    #     volumes:
-    #         - ${DATA_FOLDER}/npm:/data
-    #         - ${DATA_FOLDER}/letsencrypt:/etc/letsencrypt
-    #         - ./npm/http_top.conf:/data/nginx/custom/http_top.conf
-    #         - ./npm/events.conf:/data/nginx/custom/events.conf
-    #         - ./npm/server_proxy.conf:/data/nginx/custom/server_proxy.conf
-    #     depends_on:
-    #         - mysql
+    npm:
+        container_name: npm
+        image: 'jc21/nginx-proxy-manager:latest'
+        restart: unless-stopped
+        ports:
+            - '80:80'
+            - '81:81'
+            - '443:443'
+        environment:
+            DB_MYSQL_HOST: ${SERVER}
+            DB_MYSQL_USER: root
+            DB_MYSQL_PASSWORD: ${PASSWORD}
+            DB_MYSQL_NAME: npm
+            DB_MYSQL_PORT: 3306
+            TZ: Asia/Seoul
+        volumes:
+            - ${DATA_FOLDER}/npm:/data
+            - ${DATA_FOLDER}/letsencrypt:/etc/letsencrypt
+            - ./npm/http_top.conf:/data/nginx/custom/http_top.conf
+            - ./npm/events.conf:/data/nginx/custom/events.conf
+            - ./npm/server_proxy.conf:/data/nginx/custom/server_proxy.conf
+        depends_on:
+            - mysql
     # wordpress:
     #     container_name: wordpress
     #     image: wordpress
