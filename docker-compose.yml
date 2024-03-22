@@ -6,9 +6,9 @@ services:
         image: mysql:8.0
         restart: always
         volumes:
-            - ${DATA_PATH}/mysql:/var/lib/mysql
             - ./mysql/my.cnf:/etc/my.cnf
-            # - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+            - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+            - ${DATA_PATH}/mysql:/var/lib/mysql
         environment:
             MYSQL_ROOT_PASSWORD: ${PASSWORD}
             TZ: Asia/Seoul
@@ -30,8 +30,8 @@ services:
         image: redis
         restart: always
         volumes:
-            - ${DATA_FOLDER}/redis:/data
             - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+            - ${DATA_FOLDER}/redis:/data
         ports:
             - ${REDIS_PORT}:6379
         command: 
@@ -45,53 +45,21 @@ services:
             - '81:81'
             - '443:443'
         environment:
-            TZ: Asia/Seoul
-            DB_MYSQL_HOST: mysql
-            DB_MYSQL_PORT: 3306
+            DB_MYSQL_HOST: ${SERVER}
+            # DB_MYSQL_HOST: ${SERVER}:${MYSQL_PORT}
             DB_MYSQL_USER: root
             DB_MYSQL_PASSWORD: ${PASSWORD}
             DB_MYSQL_NAME: npm
+            DB_MYSQL_PORT: 3306
+            TZ: Asia/Seoul
         volumes:
-            - ${DATA_FOLDER}/npm:/data
-            - ${DATA_FOLDER}/letsencrypt:/etc/letsencrypt
             - ./npm/http_top.conf:/data/nginx/custom/http_top.conf
             - ./npm/events.conf:/data/nginx/custom/events.conf
             - ./npm/server_proxy.conf:/data/nginx/custom/server_proxy.conf
+            - ${DATA_FOLDER}/npm:/data
+            - ${DATA_FOLDER}/letsencrypt:/etc/letsencrypt
         depends_on:
             - mysql
-    portainer:
-        container_name: portainer
-        image: 'portainer/portainer-ce:latest'
-        restart: always
-        ports:
-            - '8000:8000'
-            - ${PORTAINER_PORT}:9000
-        volumes:
-            - ${DATA_FOLDER}/portainer:/data
-            - /var/run/docker.sock:/var/run/docker.sock
-    netdata:
-        container_name: netdata
-        image: netdata/netdata
-        pid: host
-        network_mode: host
-        restart: unless-stopped
-        cap_add:
-            - SYS_PTRACE
-            - SYS_ADMIN
-        security_opt:
-            - apparmor:unconfined
-        volumes:
-            - ${DATA_FOLDER}/netdata:/etc/netdata
-            - ${DATA_FOLDER}/netdatalib:/var/lib/netdata
-            - ${DATA_FOLDER}/netdatacache:/var/cache/netdata
-            - /etc/passwd:/host/etc/passwd:ro
-            - /etc/group:/host/etc/group:ro
-            - /etc/localtime:/etc/localtime:ro
-            - /proc:/host/proc:ro
-            - /sys:/host/sys:ro
-            - /etc/os-release:/host/etc/os-release:ro
-            - /var/log:/host/var/log:ro
-            - /var/run/docker.sock:/var/run/docker.sock:ro
     wordpress:
         container_name: wordpress
         image: wordpress
@@ -107,3 +75,36 @@ services:
             - ${DATA_PATH}/wordpress:/var/www/html
         depends_on:
             - mysql
+    portainer:
+        container_name: portainer
+        image: 'portainer/portainer-ce:latest'
+        restart: always
+        ports:
+            - '8000:8000'
+            - ${PORTAINER_PORT}:9000
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+            - ${DATA_FOLDER}/portainer:/data
+    netdata:
+        container_name: netdata
+        image: netdata/netdata
+        pid: host
+        network_mode: host
+        restart: unless-stopped
+        cap_add:
+            - SYS_PTRACE
+            - SYS_ADMIN
+        security_opt:
+            - apparmor:unconfined
+        volumes:
+            - /etc/passwd:/host/etc/passwd:ro
+            - /etc/group:/host/etc/group:ro
+            - /etc/localtime:/etc/localtime:ro
+            - /proc:/host/proc:ro
+            - /sys:/host/sys:ro
+            - /etc/os-release:/host/etc/os-release:ro
+            - /var/log:/host/var/log:ro
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+            - ${DATA_FOLDER}/netdata:/etc/netdata
+            - ${DATA_FOLDER}/netdatalib:/var/lib/netdata
+            - ${DATA_FOLDER}/netdatacache:/var/cache/netdata
