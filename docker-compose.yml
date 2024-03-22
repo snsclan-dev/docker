@@ -74,16 +74,16 @@ services:
     #         - ${DATA_PATH}/wordpress:/var/www/html
     #     depends_on:
     #         - mysql
-    # portainer:
-    #     container_name: portainer
-    #     image: 'portainer/portainer-ce:latest'
-    #     restart: always
-    #     ports:
-    #         - '8000:8000'
-    #         - ${PORTAINER_PORT}:9000
-    #     volumes:
-    #         - ${DATA_FOLDER}/portainer:/data
-    #         - /var/run/docker.sock:/var/run/docker.sock
+    portainer:
+        container_name: portainer
+        image: 'portainer/portainer-ce:latest'
+        restart: always
+        ports:
+            - '8000:8000'
+            - ${PORTAINER_PORT}:9000
+        volumes:
+            - ${DATA_FOLDER}/portainer:/data
+            - /var/run/docker.sock:/var/run/docker.sock
     # netdata:
     #     container_name: netdata
     #     image: netdata/netdata
