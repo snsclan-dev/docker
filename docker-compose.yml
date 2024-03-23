@@ -1,15 +1,6 @@
 version: "3"
 
 services:
-    # nginx:
-    #     container_name: nginx
-    #     image: nginx
-    #     volumes:
-    #         - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-    #         - ./nginx/conf.d:/etc/nginx/conf.d
-    #         - ./nginx/html:/usr/share/nginx/html
-    #     ports:
-    #         - "80:80"
     mysql:
         container_name: mysql
         image: mysql:8.0
@@ -52,44 +43,13 @@ services:
         network_mode: host
         volumes:
             - ${DATA_FOLDER}/npmplus:/data
+            - ./npm/http_top.conf:/data/nginx/custom/http_top.conf
+            - ./npm/events.conf:/data/nginx/custom/events.conf
+            - ./npm/server_proxy.conf:/data/nginx/custom/server_proxy.conf
         environment:
-            - "TZ=Asia/Seoul" # set timezone, required
-    # npm:
-    #     container_name: npm
-    #     image: 'jc21/nginx-proxy-manager:latest'
-    #     restart: unless-stopped
-    #     ports:
-    #         - '80:80'
-    #         - '81:81'
-    #         - '443:443'
-    #     environment:
-    #         TZ: Asia/Seoul
-    #         DB_MYSQL_HOST: "npm_db"
-    #         DB_MYSQL_PORT: 3306
-    #         DB_MYSQL_USER: "npm"
-    #         DB_MYSQL_PASSWORD: "npm"
-    #         DB_MYSQL_NAME: "npm"
-    #     volumes:
-    #         - ${DATA_FOLDER}/npm:/data
-    #         - ${DATA_FOLDER}/letsencrypt:/etc/letsencrypt
-    #         - ./npm/http_top.conf:/data/nginx/custom/http_top.conf
-    #         - ./npm/events.conf:/data/nginx/custom/events.conf
-    #         # - ./npm/server_proxy.conf:/data/nginx/custom/server_proxy.conf
-    #     depends_on:
-    #         - npm_db
-    # npm_db:
-    #     container_name: npm_db
-    #     image: 'jc21/mariadb-aria:latest'
-    #     restart: unless-stopped
-    #     environment:
-    #         TZ: Asia/Seoul
-    #         MYSQL_ROOT_PASSWORD: 'npm'
-    #         MYSQL_DATABASE: 'npm'
-    #         MYSQL_USER: 'npm'
-    #         MYSQL_PASSWORD: 'npm'
-    #         MARIADB_AUTO_UPGRADE: '1'
-    #     volumes:
-    #         - ${DATA_FOLDER}/npm_db:/var/lib/mysql
+            - "TZ=Asia/Seoul"
+            # - "LOGROTATE=true" # Enables writing http access logs to /opt/npm/nginx/access.log, stream access logs to /opt/npm/nginx/stream.log and enables daily logrotation, default false
+            # - "LOGROTATIONS=7" # Set how often the access.log should be rotated until it is deleted, default 3
     wordpress:
         container_name: wordpress
         image: wordpress
