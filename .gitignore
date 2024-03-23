@@ -8,4 +8,5 @@ text.txt
 /redis/data
 /npm/data
 /npm/mysql
+/nginx
 *copy.yml
