@@ -36,6 +36,12 @@ services:
             - ${REDIS_PORT}:6379
         command: 
             redis-server /usr/local/etc/redis/redis.conf
+    php:
+        container_name: php
+        image: php:8.2-fpm
+        restart: always
+        volumes:
+            - ./php/index.php:/var/www/html
     npmplus:
         container_name: npmplus
         image: zoeyvid/npmplus
@@ -43,7 +49,7 @@ services:
         network_mode: host
         volumes:
             - ${DATA_FOLDER}/npmplus:/data
-            # - "/var/www:/var/www" # optional, if you want to use it as webserver for html/php
+            - "/var/www:/var/www" # optional, if you want to use it as webserver for html/php
             # - /var/www/rhymix:/var/www/rhymix" # optional, if you want to use it as webserver for html/php
             - ./npm/http.conf:/data/nginx/custom/http.conf
             - ./npm/http_top.conf:/data/nginx/custom/http_top.conf
@@ -70,14 +76,6 @@ services:
             - ${DATA_PATH}/wordpress:/var/www/html
         depends_on:
             - mysql
-    php:
-        container_name: php
-        image: php:8.2-fpm
-        restart: always
-        volumes:
-            - ./php/index.php:/var/www/html/index.php
-        ports:
-            - '8008:80'
     portainer:
         container_name: portainer
         image: 'portainer/portainer-ce:latest'
