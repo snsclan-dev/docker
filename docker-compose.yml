@@ -50,12 +50,12 @@ services:
         restart: always
         network_mode: host
         ports:
-            - '80:80'
-            - '81:81'
-            - '443:443'
+            - "80:80"
         volumes:
             - ${DATA_FOLDER}/npmplus:/data
-            - ./npm/rhymix.conf:/etc/nginx/conf.d/rhymix.conf
+            # - ./nginx_php.conf:/etc/nginx/sites-available/nginx_php.conf # NGINX 구성 파일 마운트
+            - ./npm/rhymix.conf:/etc/nginx/sites-available/rhymix.conf
+            # - ./sites-enabled:/etc/nginx/sites-enabled # 심볼릭 링크 디렉토리 마운트
             # - "/var/www:/var/www" # optional, if you want to use it as webserver for html/php
             # - /var/www/rhymix:/var/www/rhymix" # optional, if you want to use it as webserver for html/php
             # - ./npm/http.conf:/data/nginx/custom/http.conf
