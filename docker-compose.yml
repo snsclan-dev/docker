@@ -53,6 +53,8 @@ services:
             - "TZ=Asia/Seoul"
             - "LOGROTATE=true" # Enables writing http access logs to /opt/npm/nginx/access.log, stream access logs to /opt/npm/nginx/stream.log and enables daily logrotation, default false
             - "LOGROTATIONS=7" # Set how often the access.log should be rotated until it is deleted, default 3
+        depends_on:
+            - php
     wordpress:
         container_name: wordpress
         image: wordpress
@@ -68,6 +70,11 @@ services:
             - ${DATA_PATH}/wordpress:/var/www/html
         depends_on:
             - mysql
+    php:
+        container_name: php
+        image: php:8.2-fpm
+        volumes:
+            - ./php/index.php:/var/www/html/index.php
     portainer:
         container_name: portainer
         image: 'portainer/portainer-ce:latest'
