@@ -73,8 +73,11 @@ services:
     php:
         container_name: php
         image: php:8.2-fpm
+        restart: always
         volumes:
             - ./php/index.php:/var/www/html/index.php
+        ports:
+            - '8008:80'
     portainer:
         container_name: portainer
         image: 'portainer/portainer-ce:latest'
