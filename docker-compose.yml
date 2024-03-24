@@ -42,7 +42,6 @@ services:
         restart: always
         ports:
             - '8008:80'
-            - '4433:443'
         volumes:
             - ./nginx/nginx.conf:/etc/nginx/nginx.conf # Nginx 설정 파일 마운트
             # - ./nginx/html:/usr/share/nginx/html # 정적 파일을 담을 디렉터리 마운트
