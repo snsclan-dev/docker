@@ -36,12 +36,20 @@ services:
             - ${REDIS_PORT}:6379
         command: 
             redis-server /usr/local/etc/redis/redis.conf
+    nginx:
+        container_name: nginx
+        image: nginx:latest
+        restart: always
+        ports:
+            - '80:80'
+        volumes:
+            - ./nginx/nginx.conf:/etc/nginx/nginx.conf # Nginx 설정 파일 마운트
+            - ./nginx/html:/usr/share/nginx/html # 정적 파일을 담을 디렉터리 마운트
+        depends_on:
+            - php
     php:
         container_name: php
         image: php:8.2-fpm
-        restart: always
-        ports:
-            - "9000:9000"
         volumes:
             - ./php/index.php:/var/www/html
     npmplus:
@@ -49,16 +57,8 @@ services:
         image: zoeyvid/npmplus
         restart: always
         network_mode: host
-        ports:
-            - "80:80"
         volumes:
             - ${DATA_FOLDER}/npmplus:/data
-            # - ./nginx_php.conf:/etc/nginx/sites-available/nginx_php.conf # NGINX 구성 파일 마운트
-            - ./npm/rhymix.conf:/etc/nginx/sites-available/rhymix.conf
-            # - ./sites-enabled:/etc/nginx/sites-enabled # 심볼릭 링크 디렉토리 마운트
-            # - "/var/www:/var/www" # optional, if you want to use it as webserver for html/php
-            # - /var/www/rhymix:/var/www/rhymix" # optional, if you want to use it as webserver for html/php
-            # - ./npm/http.conf:/data/nginx/custom/http.conf
             - ./npm/http_top.conf:/data/nginx/custom/http_top.conf
             - ./npm/events.conf:/data/nginx/custom/events.conf
             - ./npm/server_proxy.conf:/data/nginx/custom/server_proxy.conf
@@ -66,8 +66,6 @@ services:
             - "TZ=Asia/Seoul"
             - "LOGROTATE=true" # Enables writing http access logs to /opt/npm/nginx/access.log, stream access logs to /opt/npm/nginx/stream.log and enables daily logrotation, default false
             - "LOGROTATIONS=7" # Set how often the access.log should be rotated until it is deleted, default 3
-            - "PHP_HOST=php"
-            - "PHP_PORT=9000" # PHP 서비스의 포트
         depends_on:
             - php
     wordpress:
