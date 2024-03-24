@@ -40,6 +40,8 @@ services:
         container_name: php
         image: php:8.2-fpm
         restart: always
+        ports:
+            - "9000:9000"
         volumes:
             - ./php/index.php:/var/www/html
     npmplus:
@@ -53,10 +55,10 @@ services:
             - '443:443'
         volumes:
             - ${DATA_FOLDER}/npmplus:/data
+            - ./npm/rhymix.conf:/etc/nginx/conf.d/rhymix.conf
             # - "/var/www:/var/www" # optional, if you want to use it as webserver for html/php
             # - /var/www/rhymix:/var/www/rhymix" # optional, if you want to use it as webserver for html/php
             # - ./npm/http.conf:/data/nginx/custom/http.conf
-            - ./npm/rhymix.conf:etc/nginx/conf.d/rhymix.conf
             - ./npm/http_top.conf:/data/nginx/custom/http_top.conf
             - ./npm/events.conf:/data/nginx/custom/events.conf
             - ./npm/server_proxy.conf:/data/nginx/custom/server_proxy.conf
@@ -64,6 +66,8 @@ services:
             - "TZ=Asia/Seoul"
             - "LOGROTATE=true" # Enables writing http access logs to /opt/npm/nginx/access.log, stream access logs to /opt/npm/nginx/stream.log and enables daily logrotation, default false
             - "LOGROTATIONS=7" # Set how often the access.log should be rotated until it is deleted, default 3
+            - "PHP_HOST=php"
+            - "PHP_PORT=9000" # PHP 서비스의 포트
         depends_on:
             - php
     wordpress:
