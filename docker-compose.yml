@@ -44,7 +44,7 @@ services:
         volumes:
             - ${DATA_FOLDER}/npmplus:/data
             # - "/var/www:/var/www" # optional, if you want to use it as webserver for html/php
-            - /var/www/rhymix:/var/www/rhymix" # optional, if you want to use it as webserver for html/php
+            # - /var/www/rhymix:/var/www/rhymix" # optional, if you want to use it as webserver for html/php
             # - ./npm/http.conf:/data/nginx/custom/http.conf
             - ./npm/http_top.conf:/data/nginx/custom/http_top.conf
             - ./npm/events.conf:/data/nginx/custom/events.conf
