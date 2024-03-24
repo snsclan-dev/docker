@@ -47,11 +47,16 @@ services:
         image: zoeyvid/npmplus
         restart: always
         network_mode: host
+        ports:
+            - '80:80'
+            - '81:81'
+            - '443:443'
         volumes:
             - ${DATA_FOLDER}/npmplus:/data
-            - "/var/www:/var/www" # optional, if you want to use it as webserver for html/php
+            # - "/var/www:/var/www" # optional, if you want to use it as webserver for html/php
             # - /var/www/rhymix:/var/www/rhymix" # optional, if you want to use it as webserver for html/php
-            - ./npm/http.conf:/data/nginx/custom/http.conf
+            # - ./npm/http.conf:/data/nginx/custom/http.conf
+            - ./npm/rhymix.conf:etc/nginx/conf.d/rhymix.conf
             - ./npm/http_top.conf:/data/nginx/custom/http_top.conf
             - ./npm/events.conf:/data/nginx/custom/events.conf
             - ./npm/server_proxy.conf:/data/nginx/custom/server_proxy.conf
