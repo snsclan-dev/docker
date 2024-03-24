@@ -51,7 +51,7 @@ services:
         container_name: php
         image: php:8.2-fpm
         volumes:
-            - ./php/index.php:/var/www/html
+            - /var/www:/var/www/html
     npmplus:
         container_name: npmplus
         image: zoeyvid/npmplus
