@@ -1,6 +1,46 @@
 version: "3"
 
 services:
+    # nginx:
+    #     container_name: nginx
+    #     image: nginx:latest
+    #     restart: always
+    #     ports:
+    #         - "8080:80"
+    #         - "8443:443"
+    #     volumes:
+    #         - ${DATA_FOLDER}/nginx/log:/var/log/nginx
+    #         - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    #         - ./nginx/conf.d:/etc/nginx/conf.d
+    #         - /var/www:/var/www
+    #     environment:
+    #         - TZ=Asia/Seoul
+    #     depends_on:
+    #         - php
+    # php:
+    #     container_name: php
+    #     build:
+    #         context: ./php/build
+    #         # dockerfile: Dockerfile
+    #     restart: always
+    #     volumes:
+    #         - ./php/index.php:/var/www/html/index.php
+    #         - ./php/php.ini:/usr/local/etc/php/php.ini-production
+    #         - /var/www:/var/www
+    npmplus:
+        container_name: npmplus
+        image: zoeyvid/npmplus
+        restart: always
+        network_mode: host
+        volumes:
+            - ${DATA_FOLDER}/npmplus:/data
+            - ./npm/http_top.conf:/data/nginx/custom/http_top.conf
+            - ./npm/events.conf:/data/nginx/custom/events.conf
+            - ./npm/server_proxy.conf:/data/nginx/custom/server_proxy.conf
+        environment:
+            - "TZ=Asia/Seoul"
+            - "LOGROTATE=true" # Enables writing http access logs to /opt/npm/nginx/access.log, stream access logs to /opt/npm/nginx/stream.log and enables daily logrotation, default false
+            - "LOGROTATIONS=7" # Set how often the access.log should be rotated until it is deleted, default 3
     mysql:
         container_name: mysql
         image: mysql:8.0
@@ -36,55 +76,21 @@ services:
             - ${REDIS_PORT}:6379
         command: 
             redis-server /usr/local/etc/redis/redis.conf
-    nginx:
-        container_name: nginx
-        image: nginx:latest
-        restart: always
-        ports:
-            - '8008:80'
-        volumes:
-            - ./nginx/nginx.conf:/etc/nginx/nginx.conf # Nginx 설정 파일 마운트
-            # - ./nginx/html:/usr/share/nginx/html # 정적 파일을 담을 디렉터리 마운트
-        environment:
-            - TZ=Asia/Seoul
-        depends_on:
-            - php
-    php:
-        container_name: php
-        image: php:8.2-fpm
-        volumes:
-            - /var/www:/var/www/html
-    npmplus:
-        container_name: npmplus
-        image: zoeyvid/npmplus
-        restart: always
-        network_mode: host
-        volumes:
-            - ${DATA_FOLDER}/npmplus:/data
-            - ./npm/http_top.conf:/data/nginx/custom/http_top.conf
-            - ./npm/events.conf:/data/nginx/custom/events.conf
-            - ./npm/server_proxy.conf:/data/nginx/custom/server_proxy.conf
-        environment:
-            - "TZ=Asia/Seoul"
-            - "LOGROTATE=true" # Enables writing http access logs to /opt/npm/nginx/access.log, stream access logs to /opt/npm/nginx/stream.log and enables daily logrotation, default false
-            - "LOGROTATIONS=7" # Set how often the access.log should be rotated until it is deleted, default 3
-        depends_on:
-            - php
-    wordpress:
-        container_name: wordpress
-        image: wordpress
-        restart: always
-        ports:
-            - ${WORDPRESS_PORT}:80
-        environment:
-            WORDPRESS_DB_HOST: ${SERVER}:${MYSQL_PORT}
-            WORDPRESS_DB_USER: root
-            WORDPRESS_DB_PASSWORD: ${PASSWORD}
-            WORDPRESS_DB_NAME: wordpress
-        volumes:
-            - ${DATA_PATH}/wordpress:/var/www/html
-        depends_on:
-            - mysql
+    # wordpress:
+    #     container_name: wordpress
+    #     image: wordpress
+    #     restart: always
+    #     ports:
+    #         - ${WORDPRESS_PORT}:80
+    #     environment:
+    #         WORDPRESS_DB_HOST: ${SERVER}:${MYSQL_PORT}
+    #         WORDPRESS_DB_USER: root
+    #         WORDPRESS_DB_PASSWORD: ${PASSWORD}
+    #         WORDPRESS_DB_NAME: wordpress
+    #     volumes:
+    #         - ${DATA_PATH}/wordpress:/var/www/html
+    #     depends_on:
+    #         - mysql
     portainer:
         container_name: portainer
         image: 'portainer/portainer-ce:latest'

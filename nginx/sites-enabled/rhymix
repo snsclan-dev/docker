@@ -1,33 +1,33 @@
+# /etc/nginx/sites-enabled/rhymix
+
 server {
     listen 80 ;
     listen [::]:80 ;
 
     root /var/www/html;
+    # root /var/www/rhymix;
     index index.php index.html index.htm index.nginx-debian.html;
 
     server_name _;
-    # access_log /var/log/nginx/web.access.log;
-    # error_log /var/log/nginx/web.error.log;
+    access_log /var/log/nginx/access.log main;
+    error_log /var/log/nginx/error.log;
+
+    # include snippets/rhymix.conf;   # 라이믹스 rewrite 규칙 인클루드
 
     location / {
         try_files $uri $uri/ /index.php?$args;
     }
-    
+
     error_page 404 /404.html;
     error_page 500 502 503 504 /50x.html;
-
     location = /50x.html {
         root /var/www/html;
     }
+
     location ~ \.php$ {
-        try_files $uri =404;
-        fastcgi_cache off;
-        fastcgi_split_path_info ^(.+\.php)(.*)$;
-        fastcgi_index index.php;
+        fastcgi_pass 127.0.0.1:9000;                   # PHP-FPM을 로컬 포트로 연동하는 경우
         include fastcgi_params;
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-        fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
-        include mime.types;
     }
     location ~ /\.ht {
         deny all;
